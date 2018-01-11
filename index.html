@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The ServerLess School</title>
+    <link rel="stylesheet" type="text/css" href="./bootstrap.min.css" />
+  </head>
+  <body>
+    <div>
+        <h1>The Serverless School</h1>
+        <form class="form">
+          <input class="form-control" type="text" name="nom" placeholder="Le nom SVP" /><br />
+          <input class="form-control" type="text" name="prenom" placeholder="Le prenom SVP" /><br />
+          <input class="form-control" type="text" name="age" placeholder="L'age SVP" /><br />
+          <input class="btn btn-success" type="submit" value="Save" id="saved">
+        </form>
+    </div>
+    <hr />
+    <h2>Liste des etudiants inscrits</h2>
+    <table>
+        <thead class="table">
+          <tr>
+              <th>NOM</th>
+              <th>PRENOM</th>
+              <th>AGE</th>
+          </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    <script type="text/javascript" src="./jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+          $.get("https://ioz9bntt4k.execute-api.us-west-2.amazonaws.com/prod/students", function(data, status){
+            // alert("Data: " + data + "\nStatus: " + status);
+            var dataArray = data.data
+            for(var i = 0; i < dataArray.length;i++){
+              $("table tbody").append("<tr><td>"+dataArray[i]["nom"]+"</td><td>"+dataArray[i]["prenom"]+"</td><td>"+dataArray[i]["age"]+"</td></tr>");
+            }
+            console.log(data);
+          });
+
+          $("#saved").click(function(ev){
+              ev.preventDefault();
+              rslt = {}
+              $(this).closest("form").find("input").each(function(){
+                if($(this).attr("name")){
+                  rslt[$(this).attr("name")] = $(this).val();
+                }
+
+              });
+              // console.log(JSON.stringify(rslt));
+
+
+              $.ajax({
+                type: 'post',
+                url: 'https://ioz9bntt4k.execute-api.us-west-2.amazonaws.com/prod/savestudent',
+                data: JSON.stringify(rslt),
+                success: function(result){
+                  console.log(result);
+                  // console.log("Alx");
+                }
+            });
+          });
+        });
+    </script>
+  </body>
+</html>
