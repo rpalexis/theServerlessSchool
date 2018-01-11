@@ -6,3 +6,8 @@ The objectif is only to exchange data between AWS Lambda function and a web a us
 
 It's time now to go to bed.
 I'll update the README soon with some explanations of what I did
+
+
+
+Here the demo's link:
+http://theserverlessschool.s3-website-us-west-2.amazonaws.com/
